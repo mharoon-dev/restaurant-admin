@@ -1,14 +1,20 @@
-import { motion } from "framer-motion";
-
-import Header from "../components/common/Header";
-import StatCard from "../components/common/StatCard";
-
-import { AlertTriangle, DollarSign, Package, TrendingUp } from "lucide-react";
-import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
-import SalesTrendChart from "../components/products/SalesTrendChart";
 import ProductsTable from "../components/products/ProductsTable";
+import Header from "../components/common/Header";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { url } from "../../utils/url";
 
-const ProductsPage = () => {
+const salesStats = {
+  totalRevenue: "$1,234,567",
+  averageOrderValue: "$78.90",
+  conversionRate: "3.45%",
+  salesGrowth: "12.3%",
+};
+
+
+const ProductsPage = ({ products ,setProducts }) => {
+
+
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Products" />
@@ -47,7 +53,7 @@ const ProductsPage = () => {
           />
         </motion.div> */}
 
-        <ProductsTable />
+        <ProductsTable products={products} setProducts={setProducts} />
 
         {/* CHARTS */}
         {/* <div className="grid grid-col-1 lg:grid-cols-2 gap-8">

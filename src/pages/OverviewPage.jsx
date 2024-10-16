@@ -6,8 +6,11 @@ import StatCard from "../components/common/StatCard";
 import SalesOverviewChart from "../components/overview/SalesOverviewChart";
 import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
 import SalesChannelChart from "../components/overview/SalesChannelChart";
+import { useSelector } from "react-redux";
 
-const OverviewPage = () => {
+const OverviewPage = ({ users, products, categories, orders }) => {
+  // const categories = useSelector((state) => state.categories.categories);
+
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Overview" />
@@ -23,25 +26,25 @@ const OverviewPage = () => {
           <StatCard
             name="Total Users"
             icon={Users}
-            value="1,234"
+            value={users?.length}
             color="#8B5CF6"
           />
           <StatCard
             name="Total Categories"
-            icon={BarChart2}
-            value="12.5%"
+            icon={ShoppingBag}
+            value={categories?.length}
             color="#10B981"
           />{" "}
           <StatCard
             name="Total Products"
             icon={ShoppingBag}
-            value="567"
+            value={products?.length}
             color="#EC4899"
           />
           <StatCard
             name="Total Orders"
             icon={Zap}
-            value="$12,345"
+            value={orders?.length}
             color="#6366F1"
           />
         </motion.div>
@@ -49,8 +52,13 @@ const OverviewPage = () => {
         {/* CHARTS */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <SalesOverviewChart />
-          <CategoryDistributionChart />
+          <SalesOverviewChart orders={orders} />
+          <CategoryDistributionChart
+            categories={categories}
+            products={products}
+            users={users}
+            orders={orders}
+          />
           {/* <SalesChannelChart /> */}
         </div>
       </main>

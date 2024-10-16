@@ -9,22 +9,43 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 
-const salesData = [
-  { name: "Jul", orders: 20 },
-  { name: "Aug", orders: 25 },
-  { name: "Sep", orders: 12 },
-  { name: "Oct", orders: 18 },
-  { name: "Nov", orders: 30 },
-  { name: "Dec", orders: 10 },
-  { name: "Jan", orders: 15 },
-  { name: "Feb", orders: 22 },
-  { name: "Mar", orders: 8 },
-  { name: "Apr", orders: 25 },
-  { name: "May", orders: 20 },
-  { name: "Jun", orders: 35 },
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
-const SalesOverviewChart = () => {
+// Initialize salesData with 0 orders for each month
+const initializeSalesData = () => {
+  return months.map((month) => ({ name: month, orders: 0 }));
+};
+
+const calculateMonthlyOrders = (orders) => {
+  const salesData = initializeSalesData();
+
+  orders.forEach((order) => {
+    const orderDate = new Date(order.createdAt);
+    const monthIndex = orderDate.getMonth(); // Get the month (0 for Jan, 11 for Dec)
+
+    // Increment the order count for the respective month
+    salesData[monthIndex].orders += 1;
+  });
+
+  return salesData;
+};
+
+const SalesOverviewChart = ({ orders }) => {
+  const salesData = calculateMonthlyOrders(orders);
+
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
@@ -61,4 +82,5 @@ const SalesOverviewChart = () => {
     </motion.div>
   );
 };
+
 export default SalesOverviewChart;

@@ -8,17 +8,16 @@ import {
   Legend,
 } from "recharts";
 
-const categoryData = [
-  { name: "Users", value: 120 },
-  { name: "Categories", value: 50 },
-  { name: "Products", value: 150 },
-  { name: "Orders", value: 35 },
-//   { name: "Sports & Outdoors", value: 1900 },
-];
-
 const COLORS = ["#6366F1", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
-const CategoryDistributionChart = () => {
+const CategoryDistributionChart = ({ categories, products, users, orders }) => {
+  const data = [
+    { name: "Users", value: users?.length },
+    { name: "Categories", value: categories?.length },
+    { name: "Products", value: products?.length },
+    { name: "Orders", value: orders?.length },
+    //   { name: "Sports & Outdoors", value: 1900 },
+  ];
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
@@ -33,7 +32,7 @@ const CategoryDistributionChart = () => {
         <ResponsiveContainer width={"100%"} height={"100%"}>
           <PieChart>
             <Pie
-              data={categoryData}
+              data={data}
               cx={"50%"}
               cy={"50%"}
               labelLine={false}
@@ -44,7 +43,7 @@ const CategoryDistributionChart = () => {
                 `${name} ${(percent * 100).toFixed(0)}%`
               }
             >
-              {categoryData.map((entry, index) => (
+              {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
