@@ -25,7 +25,33 @@ const dailyOrdersData = [
   { date: "dec", orders: 85 },
 ];
 
-const DailyOrders = () => {
+const transformOrderData = (orders) => {
+  const monthlyOrders = {};
+
+  orders.forEach((order) => {
+    const month = new Date(order.createdAt).toLocaleString("default", {
+      month: "short",
+    });
+
+    if (!monthlyOrders[month]) {
+      monthlyOrders[month] = 0;
+    }
+
+    // Summing the orders for each month based on quantity
+    monthlyOrders[month] += order.quantity;
+  });
+
+  // Convert the object to an array format that Recharts can use
+  return Object.keys(monthlyOrders).map((month) => ({
+    date: month,
+    orders: monthlyOrders[month],
+  }));
+};
+
+const DailyOrders = ({ orderData = ordersData, setOrders }) => {
+  // Transforming the order data to be grouped by month
+  const monthlyOrdersData = transformOrderData(orderData);
+
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
@@ -33,11 +59,13 @@ const DailyOrders = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
-      <h2 className="text-xl font-semibold text-gray-100 mb-4">Daily Orders</h2>
+      <h2 className="text-xl font-semibold text-gray-100 mb-4">
+        Monthly Orders
+      </h2>
 
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer>
-          <LineChart data={dailyOrdersData}>
+          <LineChart data={monthlyOrdersData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis dataKey="date" stroke="#9CA3AF" />
             <YAxis stroke="#9CA3AF" />
@@ -61,4 +89,5 @@ const DailyOrders = () => {
     </motion.div>
   );
 };
+
 export default DailyOrders;

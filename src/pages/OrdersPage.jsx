@@ -58,8 +58,8 @@ const OrdersPage = ({ orders, setOrders }) => {
         </motion.div> */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <DailyOrders />
-          <OrderDistribution />
+          <DailyOrders orderData={orders} setOrders={setOrders}/>
+          <OrderDistribution orderData={orders} setOrders={setOrders} />
         </div>
 
         <OrdersTable orderData={orders} setOrders={setOrders} />

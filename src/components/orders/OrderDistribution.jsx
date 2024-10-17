@@ -16,7 +16,30 @@ const orderStatusData = [
 ];
 const COLORS = ["#FED766", "#4ECDC4", "#45B7D1", "#", "#2AB7CA"];
 
-const OrderDistribution = () => {
+const transformOrderStatusData = (orders) => {
+  const statusCount = {};
+
+  orders.forEach((order) => {
+    const status = order.status;
+
+    if (!statusCount[status]) {
+      statusCount[status] = 0;
+    }
+
+    statusCount[status] += 1;
+  });
+
+  // Convert the object to an array format that Recharts can use
+  return Object.keys(statusCount).map((status) => ({
+    name: status,
+    value: statusCount[status],
+  }));
+};
+
+const OrderDistribution = ({ orderData = ordersData, setOrders }) => {
+  // Transforming the order data to show distribution based on status
+  const orderStatusData = transformOrderStatusData(orderData);
+
   return (
     <motion.div
       className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
@@ -62,4 +85,5 @@ const OrderDistribution = () => {
     </motion.div>
   );
 };
+
 export default OrderDistribution;
