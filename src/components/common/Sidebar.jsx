@@ -29,6 +29,12 @@ const SIDEBAR_ITEMS = [
   },
   { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
   {
+    name: "Coupons",
+    icon: ShoppingBag,
+    color: "#E11D48",
+    href: "/coupens",
+  },
+  {
     name: "Create Category",
     icon: ShoppingBag,
     color: "#F472B6",
@@ -40,6 +46,13 @@ const SIDEBAR_ITEMS = [
     color: "#10B981",
     href: "/create-product",
   },
+  {
+    name: "Create Coupen",
+    icon: ShoppingBag,
+    color: "#F472B6",
+    href: "/create-coupen",
+  },
+
   //   { name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },
   //   { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
 ];

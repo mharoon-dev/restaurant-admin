@@ -11,6 +11,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import SettingsPage from "./pages/SettingsPage";
 import CreateCategory from "./pages/CreateCategory";
 import CreateProduct from "./pages/CreateProduct";
+import CreateCoupen from "./pages/CreateCoupen.jsx";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,6 +24,7 @@ import {
   getProductsStart,
   getProductsSuccess,
 } from "./Redux/Slices/productsSlice.jsx";
+import CoupensPages from "./pages/CoupensPages.jsx";
 
 const api = axios.create({
   baseURL: url,
@@ -33,6 +35,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [coupens, setCoupens] = useState([]);
   const [orders, setOrders] = useState([]);
   // const categories = useSelector((state) => state.categories.categories);
   //   const products = useSelector((state) => state.products.products);
@@ -93,10 +96,22 @@ function App() {
       }
     };
 
+    const fetchCoupens = async () => {
+      try {
+        const response = await api.get("/coupens");
+        console.log("Coupens API Response:", response.data);
+        setCoupens(response.data);
+      } catch (error) {
+        console.log(error);
+        setCoupens([]);
+      }
+    };
+
     fetchUsers();
     fetchCategories();
     fetchProducts();
     fetchOrders();
+    fetchCoupens();
   }, []);
 
   return (
@@ -128,6 +143,10 @@ function App() {
         />
         <Route path="/users" element={<UsersPage users={users} />} />
         <Route
+          path="/coupens"
+          element={<CoupensPages coupens={coupens} setCoupens={setCoupens} />}
+        />
+        <Route
           path="/categories"
           element={
             <CategoriesPage
@@ -141,6 +160,10 @@ function App() {
           element={<OrdersPage orders={orders} setOrders={setOrders} />}
         />
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route
+          path="/create-coupen"
+          element={<CreateCoupen setCoupens={setCoupens} />}
+        />
         <Route path="/settings" element={<SettingsPage />} />
         <Route
           path="/create-category"
