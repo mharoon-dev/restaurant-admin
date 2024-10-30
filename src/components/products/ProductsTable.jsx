@@ -3,20 +3,12 @@ import { motion } from "framer-motion";
 import { Edit, Search, Trash2, XCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { url } from "../../../utils/url";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-// import {
-//   deleteProductFailure,
-//   deleteProductStart,
-//   deleteProductSuccess,
-//   updateProductFailure,
-//   updateProductStart,
-//   updateProductSuccess,
-// } from "../../Redux/Slices/productsSlice.jsx";
 
 const style = {
   position: "absolute",
@@ -43,7 +35,7 @@ const api = axios.create({
   baseURL: url,
 });
 
-const ProductsTable = ({ products, setProducts }) => {
+const ProductsTable = ({ products, setProducts, categories }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [singleProduct, setSingleProduct] = useState(null);
@@ -52,9 +44,10 @@ const ProductsTable = ({ products, setProducts }) => {
   const [category, setCategory] = useState("");
   const [variations, setVariations] = useState([]);
   const [open, setOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const dispatch = useDispatch();
+
   const handleOpen = (product) => {
-    /*************  ✨ Codeium Command 🌟  *************/
     setSingleProduct(product);
     setTitle(product?.title || "");
     setDescription(product?.desc || "");
@@ -62,36 +55,30 @@ const ProductsTable = ({ products, setProducts }) => {
     setVariations(product?.variations || []);
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
 
   const handleDelete = (id) => {
-    // dispatch(deleteProductStart());
     api
       .delete(`/products/${id}`)
-      .then((res) => {
-        // dispatch(deleteProductSuccess(id));
+      .then(() => {
         setProducts(products.filter((product) => product._id !== id));
         alert("Product deleted");
-        // window.location.reload();
       })
-      .catch((err) => {
-        // dispatch(deleteProductFailure());
+      .catch(() => {
         alert("Something went wrong");
       });
   };
 
   const handleEdit = (id) => {
-    // dispatch(updateProductStart());
-
     api
       .put(`/products/${id}`, {
         title,
         desc: description,
-        categories: category.split(",").map((cat) => cat.trim()), // Convert to array
-        variations, // Send the variations
+        categories: category.split(",").map((cat) => cat.trim()),
+        variations,
       })
       .then((res) => {
-        // dispatch(updateProductSuccess(id));
         setProducts((prevProducts) =>
           prevProducts.map((product) =>
             product._id === id ? res.data : product
@@ -99,12 +86,10 @@ const ProductsTable = ({ products, setProducts }) => {
         );
         alert("Product updated");
         setOpen(false);
-        // window.location.reload();
       })
       .catch((err) => {
-        // dispatch(updateProductFailure());
         console.log(err);
-        alert(err);
+        alert("Error updating product");
         setOpen(false);
       });
   };
@@ -112,23 +97,33 @@ const ProductsTable = ({ products, setProducts }) => {
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
+    filterProducts(term, selectedCategory);
+  };
 
+  const handleCategoryClick = (categoryName) => {
+    setSelectedCategory(categoryName);
+    filterProducts(searchTerm, categoryName);
+  };
+
+  const filterProducts = (searchTerm, categoryName) => {
     const filtered = products.filter(
       (product) =>
-        product.title.toLowerCase().includes(term) ||
-        product.categories.some((category) =>
-          category.toLowerCase().includes(term)
-        )
+        product.title.toLowerCase().includes(searchTerm) &&
+        (!categoryName ||
+          product.categories.some(
+            (category) => category.toLowerCase() === categoryName.toLowerCase()
+          ))
     );
     setFilteredProducts(filtered);
   };
 
-  // Ensure the filtered products are set when data arrives
   useEffect(() => {
-    if (products?.length) {
-      setFilteredProducts(products);
+    setFilteredProducts(products);
+    if (categories.length > 0) {
+      setSelectedCategory(categories[0].name); // Set the first category as default
+      filterProducts(searchTerm, categories[0].name); // Filter by default category
     }
-  }, [products]);
+  }, [products, categories]);
 
   const handleVariationChange = (index, key, value) => {
     const updatedVariations = [...variations];
@@ -147,6 +142,22 @@ const ProductsTable = ({ products, setProducts }) => {
 
   return (
     <>
+      <div className="flex items-center justify-center space-x-4 mb-6">
+        {categories?.map((category) => (
+          <button
+            key={category.name}
+            className={`bg-gray-700 text-white rounded-lg px-4 py-2 `}
+            style={{
+              backgroundColor:
+                selectedCategory === category.name ? "#3b82f6" : "#1f2937",
+            }}
+            onClick={() => handleCategoryClick(category.name)}
+          >
+            {category.name}
+          </button>
+        ))}
+      </div>
+
       <motion.div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700 mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-gray-100">Product List</h2>
@@ -214,12 +225,12 @@ const ProductsTable = ({ products, setProducts }) => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {product?.variations?.length > 0
                         ? product?.variations?.map((variation, index) => (
-                          <div key={index}>
-                            {variation?.size && variation?.price
-                              ? `${variation?.size} - £${variation?.price}`
-                              : ""}
-                          </div>
-                        ))
+                            <div key={index}>
+                              {variation?.size && variation?.price
+                                ? `${variation?.size} - £${variation?.price}`
+                                : ""}
+                            </div>
+                          ))
                         : "No variations"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">

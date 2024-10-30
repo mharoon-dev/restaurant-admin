@@ -172,7 +172,7 @@ const OrdersTable = ({ orderData, setOrders }) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        order.status === "Delivered"
+                        order.status === "delivered"
                           ? "bg-green-100 text-green-800"
                           : order.status === "Processing"
                           ? "bg-yellow-100 text-yellow-800"
@@ -181,7 +181,8 @@ const OrdersTable = ({ orderData, setOrders }) => {
                           : "bg-red-100 text-red-800"
                       }`}
                     >
-                      {order?.status}
+                      {order?.status.slice(0, 1).toUpperCase() +
+                        order?.status.slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">

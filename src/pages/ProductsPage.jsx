@@ -11,10 +11,7 @@ const salesStats = {
   salesGrowth: "12.3%",
 };
 
-
-const ProductsPage = ({ products ,setProducts }) => {
-
-
+const ProductsPage = ({ products, setProducts, categories, setCategories }) => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Products" />
@@ -53,7 +50,8 @@ const ProductsPage = ({ products ,setProducts }) => {
           />
         </motion.div> */}
 
-        <ProductsTable products={products} setProducts={setProducts} />
+        <ProductsTable products={products} setProducts={setProducts} categories={categories}
+setCategories={setCategories} />
 
         {/* CHARTS */}
         {/* <div className="grid grid-col-1 lg:grid-cols-2 gap-8">

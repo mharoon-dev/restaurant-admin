@@ -37,7 +37,7 @@ const UsersTable = ({ userData }) => {
       transition={{ delay: 0.2 }}
     >
       <div className="flex flex-wrap justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-100">Users</h2>
+        <h2 className="text-xl font-semibold text-gray-100">Customers</h2>
         <div className="relative">
           <input
             type="text"

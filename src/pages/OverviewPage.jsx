@@ -24,7 +24,7 @@ const OverviewPage = ({ users, products, categories, orders }) => {
           transition={{ duration: 1 }}
         >
           <StatCard
-            name="Total Users"
+            name="Total Customers"
             icon={Users}
             value={users?.length}
             color="#8B5CF6"
@@ -36,7 +36,7 @@ const OverviewPage = ({ users, products, categories, orders }) => {
             color="#10B981"
           />{" "}
           <StatCard
-            name="Total Products"
+            name="Total Items"
             icon={ShoppingBag}
             value={products?.length}
             color="#EC4899"

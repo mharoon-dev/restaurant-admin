@@ -19,12 +19,17 @@ const CreateCoupon = ({ setCoupens }) => {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [discount, setDiscount] = useState("");
+  const [description, setDescription] = useState("");
+  const [active, setActive] = useState(true);
 
   const handleClick = (e) => {
     e.preventDefault();
+    // console.log(code, discount, description, active);
     const coupon = {
       code,
       discount,
+      desc: description,
+      active,
     };
     api
       .post("/coupens", coupon)
@@ -81,6 +86,41 @@ const CreateCoupon = ({ setCoupens }) => {
                 placeholder="50"
                 onChange={(e) => setDiscount(e.target.value)}
               />
+            </div>
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label
+                className="block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                htmlFor="grid-description"
+              >
+                Description
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-none focus:border-gray-500"
+                id="grid-description"
+                type="text"
+                placeholder="Coupon description"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label
+                className="block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                htmlFor="grid-active"
+              >
+                Active
+              </label>
+              <select
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-none focus:border-gray-500"
+                id="grid-active"
+                onChange={(e) => setActive(e.target.value === "true")}
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
             </div>
           </div>
           <div className="flex items-center justify-center">

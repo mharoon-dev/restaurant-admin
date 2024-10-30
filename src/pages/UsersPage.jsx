@@ -21,7 +21,7 @@ const userStats = {
 const UsersPage = ({ users }) => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
-      <Header title="Users" />
+      <Header title="Customers" />
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <UsersTable userData={users} />

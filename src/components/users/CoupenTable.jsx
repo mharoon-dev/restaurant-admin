@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Checkbox from "@mui/material/Checkbox";
 
 const style = {
   position: "absolute",
@@ -39,7 +40,12 @@ const CoupenTable = ({ coupens, setCoupens }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredCoupens, setFilteredCoupens] = useState([]);
   const [singleCoupen, setSingleCoupen] = useState(null);
-  const [updateInput, setUpdateInput] = useState({ code: "", discount: "" });
+  const [updateInput, setUpdateInput] = useState({
+    code: "",
+    discount: "",
+    desc: "",
+    active: false,
+  });
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -47,37 +53,34 @@ const CoupenTable = ({ coupens, setCoupens }) => {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log(coupens);
+    if (coupens?.length) {
+      setFilteredCoupens(coupens); // Initialize with coupenData when it changes
+    }
   }, [coupens]);
 
   const handleDelete = (id) => {
-    console.log(id + "===>> id for delete coupen");
-
     api
       .delete(`/coupens/${id}`)
       .then((res) => {
-        console.log(res.data);
         alert("Coupen Deleted");
         setCoupens((prevCoupens) =>
           prevCoupens.filter((coupen) => coupen._id !== id)
         );
       })
       .catch((err) => {
-        console.log(err);
         alert("Something went wrong");
       });
   };
 
   const handleEdit = (id) => {
-    console.log(id);
-
     api
       .put(`/coupens/${id}`, {
         code: updateInput.code,
         discount: updateInput.discount,
+        desc: updateInput.desc,
+        active: updateInput.active,
       })
       .then((res) => {
-        console.log(res.data);
         alert("Coupen updated");
         setCoupens((prevCoupens) =>
           prevCoupens.map((coupen) => (coupen._id === id ? res.data : coupen))
@@ -85,16 +88,9 @@ const CoupenTable = ({ coupens, setCoupens }) => {
         setOpen(false);
       })
       .catch((err) => {
-        console.log(err);
         alert("Something went wrong");
       });
   };
-
-  useEffect(() => {
-    if (coupens?.length) {
-      setFilteredCoupens(coupens); // Initialize with coupenData when it changes
-    }
-  }, [coupens]);
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
@@ -114,7 +110,7 @@ const CoupenTable = ({ coupens, setCoupens }) => {
         transition={{ delay: 0.2 }}
       >
         <div className="flex flex-wrap justify-between items-center mb-6">
-          <h2 className="text-xl mb-4 font-semibold text-gray-100">Coupens</h2>
+          <h2 className="text-xl mb-4 font-semibold text-gray-100">Coupons</h2>
           <div className="relative mb-4">
             <input
               type="text"
@@ -141,11 +137,16 @@ const CoupenTable = ({ coupens, setCoupens }) => {
                   Discount
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  Active
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-
             <tbody className="divide-y divide-gray-700">
               {filteredCoupens?.length > 0 ? (
                 filteredCoupens.map((coupen) => (
@@ -161,6 +162,12 @@ const CoupenTable = ({ coupens, setCoupens }) => {
                     <td className="px-6 py-4 text-sm text-gray-300">
                       {coupen?.discount}%
                     </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {coupen?.desc}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {coupen?.active ? "Yes" : "No"}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       <button className="text-indigo-400 hover:text-indigo-300 mr-2">
                         <Edit
@@ -170,6 +177,8 @@ const CoupenTable = ({ coupens, setCoupens }) => {
                             setUpdateInput({
                               code: coupen?.code,
                               discount: coupen?.discount,
+                              desc: coupen?.desc,
+                              active: coupen?.active,
                             });
                             handleOpen();
                           }}
@@ -186,7 +195,7 @@ const CoupenTable = ({ coupens, setCoupens }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3" className="text-center py-4 text-gray-400">
+                  <td colSpan="5" className="text-center py-4 text-gray-400">
                     No coupens found.
                   </td>
                 </tr>
@@ -213,7 +222,6 @@ const CoupenTable = ({ coupens, setCoupens }) => {
               Code
             </Typography>
             <TextField
-              id="standard-basic"
               sx={input}
               value={updateInput.code}
               onChange={(e) =>
@@ -228,7 +236,6 @@ const CoupenTable = ({ coupens, setCoupens }) => {
               Discount
             </Typography>
             <TextField
-              id="standard-basic"
               sx={input}
               value={updateInput.discount}
               onChange={(e) =>
@@ -240,6 +247,35 @@ const CoupenTable = ({ coupens, setCoupens }) => {
               label="Discount"
               variant="standard"
               type="number"
+            />
+
+            {/* Description Field */}
+            <Typography variant="body1" component="label" sx={{ mt: 2 }}>
+              Description
+            </Typography>
+            <TextField
+              sx={input}
+              value={updateInput.desc}
+              onChange={(e) =>
+                setUpdateInput((prev) => ({ ...prev, desc: e.target.value }))
+              }
+              label="Description"
+              variant="standard"
+            />
+
+            {/* Active Checkbox */}
+            <Typography variant="body1" component="label" sx={{ mt: 2 }}>
+              Active
+            </Typography>
+            <Checkbox
+              checked={updateInput.active}
+              onChange={(e) =>
+                setUpdateInput((prev) => ({
+                  ...prev,
+                  active: e.target.checked,
+                }))
+              }
+              color="primary"
             />
 
             <Button

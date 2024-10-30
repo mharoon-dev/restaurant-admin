@@ -138,12 +138,13 @@ function App() {
         <Route
           path="/products"
           element={
-            <ProductsPage products={products} setProducts={setProducts} />
+            <ProductsPage products={products} setProducts={setProducts} categories={categories}
+            setCategories={setCategories} />
           }
         />
         <Route path="/users" element={<UsersPage users={users} />} />
         <Route
-          path="/coupens"
+          path="/coupons"
           element={<CoupensPages coupens={coupens} setCoupens={setCoupens} />}
         />
         <Route
