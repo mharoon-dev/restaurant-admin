@@ -34,6 +34,12 @@ const SIDEBAR_ITEMS = [
     color: "#E11D48",
     href: "/coupons",
   },
+  {
+    name: "Deals",
+    icon: ShoppingBag,
+    color: "#EC4899",
+    href: "/deals",
+  },
 ];
 
 const SIDEBAR_ITEMS2 = [
@@ -54,6 +60,12 @@ const SIDEBAR_ITEMS2 = [
     icon: ShoppingBag,
     color: "#F472B6",
     href: "/create-coupon",
+  },
+  {
+    name: "Deal",
+    icon: ShoppingBag,
+    color: "#F472B6",
+    href: "/create-deal",
   },
 ];
 

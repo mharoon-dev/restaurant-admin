@@ -12,8 +12,10 @@ import SettingsPage from "./pages/SettingsPage";
 import CreateCategory from "./pages/CreateCategory";
 import CreateProduct from "./pages/CreateProduct";
 import CreateCoupen from "./pages/CreateCoupen.jsx";
+import CreateDeal from "./pages/CreateDeal.jsx"; // Import CreateDeal component
+import DealsPages from "./pages/DealPage.jsx"; // Import DealsPage for viewing deals
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   getCategoriesStart,
   getCategoriesSuccess,
@@ -37,14 +39,14 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [coupens, setCoupens] = useState([]);
   const [orders, setOrders] = useState([]);
-  // const categories = useSelector((state) => state.categories.categories);
-  //   const products = useSelector((state) => state.products.products);
+  const [deals, setDeals] = useState([]); // Add state for deals
 
   useEffect(() => {
     console.log("products:", products);
     console.log("Categories:", categories);
     console.log("users:", users);
-  }, [categories, products, users]);
+    console.log("deals:", deals);
+  }, [categories, products, users, deals]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -60,28 +62,22 @@ function App() {
 
     const fetchCategories = async () => {
       try {
-        // dispatch(getCategoriesStart());
         const response = await api.get("/categories");
         console.log("categories API Response:", response.data);
         setCategories(response.data);
-        // dispatch(getCategoriesSuccess(response.data));
       } catch (error) {
         console.log(error);
-        // dispatch(getCategoriesFailure());
       }
     };
 
     const fetchProducts = async () => {
       try {
-        // dispatch(getProductsStart());
         const response = await api.get("/products");
         console.log("Products API Response:", response.data);
         setProducts(response.data);
-        // dispatch(getProductsSuccess(response.data));
       } catch (error) {
         console.log(error);
         setProducts([]);
-        // dispatch(getProductsFailure(error.message));
       }
     };
 
@@ -107,16 +103,28 @@ function App() {
       }
     };
 
+    const fetchDeals = async () => {
+      try {
+        const response = await api.get("/deals/active-deals");
+        console.log("Deals API Response:", response.data);
+        setDeals(response.data);
+      } catch (error) {
+        console.log(error);
+        setDeals([]);
+      }
+    };
+
     fetchUsers();
     fetchCategories();
     fetchProducts();
     fetchOrders();
     fetchCoupens();
+    fetchDeals(); // Fetch deals
   }, []);
 
   return (
     <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
-      {/* BG */}
+      {/* Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
         <div className="absolute inset-0 backdrop-blur-sm" />
@@ -132,14 +140,19 @@ function App() {
               products={products}
               categories={categories}
               orders={orders}
+              deals={deals} // Pass deals to OverviewPage if needed
             />
           }
         />
         <Route
           path="/products"
           element={
-            <ProductsPage products={products} setProducts={setProducts} categories={categories}
-            setCategories={setCategories} />
+            <ProductsPage
+              products={products}
+              setProducts={setProducts}
+              categories={categories}
+              setCategories={setCategories}
+            />
           }
         />
         <Route path="/users" element={<UsersPage users={users} />} />
@@ -165,6 +178,12 @@ function App() {
           path="/create-coupen"
           element={<CreateCoupen setCoupens={setCoupens} />}
         />
+        <Route
+          path="/deals"
+          element={
+            <DealsPages deals={deals} setDeals={setDeals} products={products} />
+          }
+        />
         <Route path="/settings" element={<SettingsPage />} />
         <Route
           path="/create-category"
@@ -173,6 +192,15 @@ function App() {
         <Route
           path="/create-product"
           element={<CreateProduct setProducts={setProducts} />}
+        />
+        {/* New Routes for Deals */}
+        {/* <Route
+          path="/deals"
+          element={<DealsPage deals={deals} setDeals={setDeals} />} // View all deals
+        /> */}
+        <Route
+          path="/create-deal"
+          element={<CreateDeal products={products} setDeals={setDeals} />} // Create new deal
         />
       </Routes>
     </div>
