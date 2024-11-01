@@ -105,7 +105,7 @@ function App() {
 
     const fetchDeals = async () => {
       try {
-        const response = await api.get("/deals/active-deals");
+        const response = await api.get("/deals/deals");
         console.log("Deals API Response:", response.data);
         setDeals(response.data);
       } catch (error) {
@@ -175,7 +175,7 @@ function App() {
         />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route
-          path="/create-coupen"
+          path="/create-coupon"
           element={<CreateCoupen setCoupens={setCoupens} />}
         />
         <Route
