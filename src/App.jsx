@@ -27,6 +27,8 @@ import {
   getProductsSuccess,
 } from "./Redux/Slices/productsSlice.jsx";
 import CoupensPages from "./pages/CoupensPages.jsx";
+import CreateSlider from "./pages/CreateSlider.jsx";
+import SliderPage from "./pages/SliderPage.jsx";
 
 const api = axios.create({
   baseURL: url,
@@ -40,22 +42,23 @@ function App() {
   const [coupens, setCoupens] = useState([]);
   const [orders, setOrders] = useState([]);
   const [deals, setDeals] = useState([]); // Add state for deals
+  const [sliders, setSliders] = useState([]); // Add state for deals
 
   useEffect(() => {
-    console.log("products:", products);
-    console.log("Categories:", categories);
-    console.log("users:", users);
-    console.log("deals:", deals);
+    // console.log("products:", products);
+    // console.log("Categories:", categories);
+    // console.log("users:", users);
+    // console.log("deals:", deals);
   }, [categories, products, users, deals]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await api.get("/users");
-        console.log("users API Response:", response.data);
+        // console.log("users API Response:", response.data);
         setUsers(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setUsers([]);
       }
     };
@@ -63,20 +66,20 @@ function App() {
     const fetchCategories = async () => {
       try {
         const response = await api.get("/categories");
-        console.log("categories API Response:", response.data);
+        // console.log("categories API Response:", response.data);
         setCategories(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
     const fetchProducts = async () => {
       try {
         const response = await api.get("/products");
-        console.log("Products API Response:", response.data);
+        // console.log("Products API Response:", response.data);
         setProducts(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setProducts([]);
       }
     };
@@ -84,10 +87,10 @@ function App() {
     const fetchOrders = async () => {
       try {
         const response = await api.get("/orders");
-        console.log("Orders API Response:", response.data);
+        // console.log("Orders API Response:", response.data);
         setOrders(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setOrders([]);
       }
     };
@@ -95,10 +98,10 @@ function App() {
     const fetchCoupens = async () => {
       try {
         const response = await api.get("/coupens");
-        console.log("Coupens API Response:", response.data);
+        // console.log("Coupens API Response:", response.data);
         setCoupens(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setCoupens([]);
       }
     };
@@ -106,11 +109,22 @@ function App() {
     const fetchDeals = async () => {
       try {
         const response = await api.get("/deals/deals");
-        console.log("Deals API Response:", response.data);
+        // console.log("Deals API Response:", response.data);
         setDeals(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setDeals([]);
+      }
+    };
+
+    const fetchSliders = async () => {
+      try {
+        const response = await api.get("/sliders");
+        console.log("Sliders API Response:", response.data);
+        setSliders(response.data);
+      } catch (error) {
+        // console.log(error);
+        setSliders([]);
       }
     };
 
@@ -119,7 +133,8 @@ function App() {
     fetchProducts();
     fetchOrders();
     fetchCoupens();
-    fetchDeals(); // Fetch deals
+    fetchDeals();
+    fetchSliders();
   }, []);
 
   return (
@@ -184,10 +199,18 @@ function App() {
             <DealsPages deals={deals} setDeals={setDeals} products={products} />
           }
         />
+        <Route
+          path="/sliders"
+          element={<SliderPage sliders={sliders} setSliders={setSliders} />}
+        />
         <Route path="/settings" element={<SettingsPage />} />
         <Route
           path="/create-category"
           element={<CreateCategory setCategories={setCategories} />}
+        />
+        <Route
+          path="/create-slider"
+          element={<CreateSlider setSliders={setSliders} />}
         />
         <Route
           path="/create-product"

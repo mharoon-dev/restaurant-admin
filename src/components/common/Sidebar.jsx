@@ -19,15 +19,33 @@ const SIDEBAR_ITEMS = [
     color: "#6366f1",
     href: "/",
   },
-  { name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/products" },
-  { name: "Customers", icon: Users, color: "#EC4899", href: "/users" },
+  {
+    name: "Products",
+
+    icon: ShoppingBag,
+    color: "#8B5CF6",
+    href: "/products",
+  },
+  {
+    name: "Customers",
+
+    icon: Users,
+    color: "#EC4899",
+    href: "/users",
+  },
   {
     name: "Categories",
     icon: ShoppingBag,
     color: "#10B981",
     href: "/categories",
   },
-  { name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
+  {
+    name: "Orders",
+
+    icon: ShoppingCart,
+    color: "#F59E0B",
+    href: "/orders",
+  },
   {
     name: "Coupons",
     icon: ShoppingBag,
@@ -39,6 +57,12 @@ const SIDEBAR_ITEMS = [
     icon: ShoppingBag,
     color: "#EC4899",
     href: "/deals",
+  },
+  {
+    name: "Sliders",
+    icon: ShoppingBag,
+    color: "#6366f1",
+    href: "/sliders",
   },
 ];
 
@@ -64,8 +88,14 @@ const SIDEBAR_ITEMS2 = [
   {
     name: "Deal",
     icon: ShoppingBag,
-    color: "#F472B6",
+    color: "#10B981",
     href: "/create-deal",
+  },
+  {
+    name: "Slider",
+    icon: ShoppingBag,
+    color: "#F472B6",
+    href: "/create-slider",
   },
 ];
 

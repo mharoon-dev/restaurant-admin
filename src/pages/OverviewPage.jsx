@@ -11,7 +11,8 @@ import OrdersTable from "../components/orders/OrdersTable.jsx";
 const OverviewPage = ({ users, products, categories, orders }) => {
   const [showTodayOrders, setShowTodayOrders] = useState(false);
   const todayOrders = orders?.filter(
-    (order) => new Date(order.createdAt).toDateString() === new Date().toDateString()
+    (order) =>
+      new Date(order.createdAt).toDateString() === new Date().toDateString()
   );
 
   return (
