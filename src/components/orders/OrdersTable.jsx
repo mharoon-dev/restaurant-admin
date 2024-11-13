@@ -403,32 +403,33 @@ const OrdersTable = ({ orderData, setOrders }) => {
                             className="text-sm flex-col font-small text-gray-100 mb-4"
                             style={{ fontSize: "16px" }}
                           >
-                            <strong>Product Title:</strong> {product.title}
+                            <strong>Product Title:</strong> {product?.title}
                           </div>
                           <div
                             className="text-sm flex-col font-small text-gray-100 mb-4"
                             style={{ fontSize: "16px" }}
                           >
-                            <strong>Description:</strong> {product.desc}
+                            <strong>Description:</strong> {product?.desc}
                           </div>
                           <div
                             className="text-sm flex-col font-small text-gray-100 mb-4"
                             style={{ fontSize: "16px" }}
                           >
-                            <strong>Quantity:</strong> {product.quantity}
+                            <strong>Quantity:</strong> {product?.quantity}
                           </div>
                           <div
                             className="text-sm flex-col font-small text-gray-100 mb-4"
                             style={{ fontSize: "16px" }}
                           >
-                            <strong>Size:</strong> {product.size}
+                            <strong>Size:</strong>{" "}
+                            {product?.selectedVariation?.size || product?.size}
                           </div>
                           <div
                             className="text-sm flex-col font-small text-gray-100 mb-4"
                             style={{ fontSize: "16px" }}
                           >
                             <strong>Price:</strong> $
-                            {product.selectedVariation?.price || product.price}
+                            {product.selectedVariation?.price || product?.price}
                           </div>
                         </div>
                       </td>
